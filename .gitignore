@@ -2,6 +2,7 @@ node_modules
 dist
 .turbo
 .vite
+.prisma
 *.tsbuildinfo
 *.env
 !.env.example
