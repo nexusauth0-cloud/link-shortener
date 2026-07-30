@@ -44,10 +44,10 @@ export function FAQSection() {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <h2 className="text-title font-bold leading-title text-foreground">
+          <h2 className="text-title font-bold leading-title tracking-tight text-foreground">
             Frequently asked questions
           </h2>
-          <p className="mt-4 text-subtitle leading-subtitle text-muted">
+          <p className="mt-4 text-subtitle leading-subtitle text-muted/70">
             Everything you need to know about Nexus Links.
           </p>
         </motion.div>
@@ -63,36 +63,39 @@ export function FAQSection() {
             >
               <div
                 className={cn(
-                  "border-b border-border/50 transition-colors",
-                  openIndex === i && "border-border",
+                  "border-b border-border/30 transition-colors duration-300",
+                  openIndex === i && "border-border/60",
                 )}
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                  className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-foreground"
+                  className={cn(
+                    "flex w-full items-center justify-between py-5 text-left transition-all duration-300",
+                    openIndex === i ? "text-foreground" : "text-muted/70 hover:text-foreground",
+                  )}
                   aria-expanded={openIndex === i}
                   aria-controls={`faq-answer-${i}`}
                 >
-                  <span className="text-sm font-medium text-foreground sm:text-base">
-                    {faq.q}
-                  </span>
+                  <span className="text-base font-medium">{faq.q}</span>
                   <ChevronDown
                     className={cn(
-                      "h-4 w-4 shrink-0 text-muted transition-transform duration-300",
-                      openIndex === i && "rotate-180",
+                      "h-4 w-4 shrink-0 transition-all duration-300",
+                      openIndex === i && "rotate-180 text-primary",
                     )}
                   />
                 </button>
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {openIndex === i && (
                     <motion.div
+                      key={`answer-${i}`}
                       id={`faq-answer-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
                     >
-                      <p className="pb-5 text-sm leading-relaxed text-muted">{faq.a}</p>
+                      <p className="pb-5 text-sm leading-relaxed text-muted/70">{faq.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

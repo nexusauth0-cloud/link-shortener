@@ -4,17 +4,21 @@ import { cn } from "../lib/utils"
 interface AnimatedCounterProps {
   end: number
   suffix?: string
+  prefix?: string
   duration?: number
   className?: string
   label?: string
+  format?: boolean
 }
 
 export function AnimatedCounter({
   end,
   suffix = "",
+  prefix = "",
   duration = 2000,
   className,
   label,
+  format = true,
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
@@ -33,11 +37,13 @@ export function AnimatedCounter({
           const animate = (currentTime: number) => {
             const elapsed = currentTime - startTime
             const progress = Math.min(elapsed / duration, 1)
-            const easeOut = 1 - Math.pow(1 - progress, 3)
+            const easeOut = 1 - Math.pow(1 - progress, 4)
             setCount(Math.floor(easeOut * end))
 
             if (progress < 1) {
               requestAnimationFrame(animate)
+            } else {
+              setCount(end)
             }
           }
 
@@ -52,18 +58,20 @@ export function AnimatedCounter({
   }, [end, duration])
 
   const formatCount = (n: number): string => {
+    if (!format) return n.toString()
     if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`
     if (n >= 1000) return `${(n / 1000).toFixed(1)}K`
-    return n.toString()
+    return n.toLocaleString()
   }
 
   return (
     <div ref={ref} className={cn("text-center", className)}>
-      <div className="text-4xl font-bold text-foreground sm:text-5xl">
+      <div className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        {prefix}
         {formatCount(count)}
         {suffix}
       </div>
-      {label && <div className="mt-2 text-sm text-muted">{label}</div>}
+      {label && <div className="mt-2 text-sm font-medium text-muted">{label}</div>}
     </div>
   )
 }
