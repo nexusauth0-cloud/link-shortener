@@ -60,10 +60,15 @@ This starts both the API (http://localhost:3001) and web (http://localhost:5173)
 
 Base URL: `http://localhost:3001/api/v1`
 
-| Method | Endpoint       | Description     |
-| ------ | -------------- | --------------- |
-| GET    | `/health`      | Health check    |
-| GET    | `/api/v1/health` | Health check |
+| Method | Endpoint              | Description          |
+| ------ | --------------------- | -------------------- |
+| GET    | `/health`             | Health check         |
+| GET    | `/api/v1/health`      | Health check         |
+| POST   | `/api/v1/auth/register` | Create an account  |
+| POST   | `/api/v1/auth/login`    | Sign in             |
+| POST   | `/api/v1/auth/logout`   | Sign out            |
+| POST   | `/api/v1/auth/refresh`  | Refresh access token |
+| GET    | `/api/v1/auth/me`       | Get current user    |
 
 ### Health Response
 
@@ -77,6 +82,18 @@ Base URL: `http://localhost:3001/api/v1`
   "timestamp": "2026-07-30T15:00:00.000Z"
 }
 ```
+
+### Authentication
+
+| Endpoint              | Method | Auth Required | Description               |
+| --------------------- | ------ | ------------- | ------------------------- |
+| `/api/v1/auth/register` | POST   | No            | Create a new account      |
+| `/api/v1/auth/login`    | POST   | No            | Sign in, get JWT + cookie |
+| `/api/v1/auth/logout`   | POST   | No            | Clear session             |
+| `/api/v1/auth/refresh`  | POST   | No            | Refresh access token      |
+| `/api/v1/auth/me`       | GET    | Yes           | Get current user profile  |
+
+Authentication uses **JWT access tokens** (15 min) sent via `Authorization: Bearer <token>` header and **HTTP-only refresh token cookies** (7 days, `SameSite=Lax`) for session renewal.
 
 ### Swagger
 
