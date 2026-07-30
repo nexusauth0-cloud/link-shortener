@@ -1,8 +1,50 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
-  --color-brand: #3b82f6;
-  --color-brand-hover: #2563eb;
+  --color-bg: #050816;
+  --color-surface: #0f172a;
+  --color-surface-light: #1e293b;
+  --color-surface-lighter: #334155;
+  --color-border: #1e293b;
+  --color-border-light: #334155;
+  --color-primary: #7c3aed;
+  --color-primary-light: #a855f7;
+  --color-primary-lighter: #c084fc;
+  --color-secondary: #38bdf8;
+  --color-accent: #a855f7;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-foreground: #f8fafc;
+  --color-muted: #94a3b8;
+  --color-muted-light: #cbd5e1;
+
+  --font-size-hero: clamp(3rem, 8vw, 5rem);
+  --font-size-display: clamp(2.5rem, 6vw, 4rem);
+  --font-size-heading: clamp(2rem, 4vw, 3rem);
+  --font-size-title: clamp(1.5rem, 3vw, 2.25rem);
+  --font-size-subtitle: clamp(1.125rem, 2vw, 1.5rem);
+  --font-size-body: 1rem;
+  --font-size-caption: 0.875rem;
+  --font-size-small: 0.75rem;
+
+  --leading-hero: 1.1;
+  --leading-display: 1.15;
+  --leading-heading: 1.2;
+  --leading-title: 1.25;
+  --leading-subtitle: 1.4;
+  --leading-body: 1.6;
+  --leading-caption: 1.5;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.02em;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
 }
 
 @keyframes fade-in-up {
@@ -16,6 +58,128 @@
   }
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-16px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 15%, transparent); }
+  50% { box-shadow: 0 0 60px color-mix(in srgb, var(--color-primary) 30%, transparent); }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @utility animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+@utility animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@utility animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@utility animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+@utility animate-blob {
+  animation: blob 7s ease-in-out infinite;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@utility text-gradient {
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility text-gradient-accent {
+  background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glass {
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--color-border-light) 30%, transparent);
+}
+
+@utility glass-strong {
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--color-border-light) 40%, transparent);
+}
+
+@utility glass-card {
+  background: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-border-light) 20%, transparent);
+}
+
+@utility glow-primary {
+  box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary) 20%, transparent),
+              0 0 60px color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+@utility glow-secondary {
+  box-shadow: 0 0 30px color-mix(in srgb, var(--color-secondary) 20%, transparent),
+              0 0 60px color-mix(in srgb, var(--color-secondary) 10%, transparent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-lighter) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
 }

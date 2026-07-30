@@ -1,19 +1,23 @@
-import type { ReactNode } from 'react'
+import { cn } from "../lib/utils"
 
 interface CardProps {
-  title: string
-  description: string
-  icon: ReactNode
+  children?: React.ReactNode
+  className?: string
+  hover?: boolean
+  glow?: boolean
 }
 
-export function Card({ title, description, icon }: CardProps) {
+export function Card({ children, className, hover = true, glow = false }: CardProps) {
   return (
-    <div className="group rounded-xl border border-gray-800 bg-gray-900/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gray-700 hover:bg-gray-900">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600/10 text-blue-400 transition-colors group-hover:bg-blue-600/20">
-        {icon}
-      </div>
-      <h3 className="mb-2 text-lg font-semibold text-gray-100">{title}</h3>
-      <p className="text-sm leading-relaxed text-gray-400">{description}</p>
+    <div
+      className={cn(
+        "rounded-xl border border-border/50 bg-surface/40 backdrop-blur-sm",
+        hover && "transition-all duration-300 hover:-translate-y-1 hover:border-border-light hover:bg-surface/60 hover:shadow-lg",
+        glow && "animate-glow",
+        className,
+      )}
+    >
+      {children}
     </div>
   )
 }

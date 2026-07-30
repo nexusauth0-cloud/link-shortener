@@ -1,41 +1,51 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { forwardRef } from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "../lib/utils"
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost'
-type ButtonSize = 'sm' | 'md' | 'lg'
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50 select-none",
+  {
+    variants: {
+      variant: {
+        primary:
+          "bg-primary text-white hover:bg-primary-light shadow-lg shadow-primary/25 hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0",
+        secondary:
+          "bg-surface text-foreground hover:bg-surface-light border border-border hover:border-border-light hover:-translate-y-0.5 active:translate-y-0",
+        ghost:
+          "text-muted hover:text-foreground hover:bg-surface/80",
+        outline:
+          "border border-primary/40 text-primary hover:bg-primary/10 hover:border-primary/60",
+        danger:
+          "bg-danger text-white hover:bg-danger/90",
+      },
+      size: {
+        sm: "h-9 px-4 text-sm gap-1.5",
+        md: "h-10 px-5 text-sm gap-2",
+        lg: "h-12 px-7 text-base gap-2",
+        xl: "h-14 px-9 text-lg gap-2.5",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  },
+)
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant
-  size?: ButtonSize
-  children: ReactNode
-}
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
 
-const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30',
-  secondary:
-    'bg-gray-800 hover:bg-gray-700 text-gray-100 border border-gray-700 hover:border-gray-600',
-  ghost: 'bg-transparent hover:bg-gray-800/50 text-gray-300 hover:text-gray-100',
-}
-
-const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-6 py-3 text-base',
-  lg: 'px-8 py-4 text-lg',
-}
-
-export function Button({
-  variant = 'primary',
-  size = 'md',
-  className = '',
-  children,
-  ...props
-}: ButtonProps) {
-  return (
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => (
     <button
-      className={`inline-flex cursor-pointer items-center justify-center rounded-lg font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={cn(buttonVariants({ variant, size }), className)}
+      ref={ref}
       {...props}
-    >
-      {children}
-    </button>
-  )
-}
+    />
+  ),
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+export type { ButtonProps }

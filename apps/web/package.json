@@ -8,22 +8,27 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@nexuslinks/shared": "workspace:*",
+    "@nexuslinks/ui": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.43.0",
+    "lucide-react": "^1.28.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "@nexuslinks/ui": "workspace:*",
-    "@nexuslinks/shared": "workspace:*"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.3",
-    "vite": "^6.3.0",
-    "@vitejs/plugin-react": "^4.4.1",
-    "tailwindcss": "^4.1.4",
+    "@eslint/js": "^9.24.0",
+    "@nexuslinks/config": "workspace:*",
     "@tailwindcss/vite": "^4.1.4",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.24.0",
-    "@eslint/js": "^9.24.0",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.7.3",
     "typescript-eslint": "^8.29.0",
-    "@nexuslinks/config": "workspace:*"
+    "vite": "^6.3.0"
   }
 }
