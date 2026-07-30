@@ -1,32 +1,80 @@
-# React + TypeScript + Vite
+# Nexus Links
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Fast, modern URL shortener built with React, Fastify, Prisma, and PostgreSQL.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Layer    | Technology                      |
+| -------- | ------------------------------- |
+| Frontend | React 19, Vite, Tailwind CSS v4 |
+| Backend  | Fastify 5, TypeScript           |
+| Database | PostgreSQL 16 via Prisma        |
+| Infra    | Docker Compose, pnpm, Turbo     |
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js >= 20
+- pnpm >= 10
+- Docker & Docker Compose (for PostgreSQL)
 
-## Expanding the Oxlint configuration
+## Getting Started
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+```bash
+# 1. Clone the repository
+git clone https://github.com/nexusauth0-cloud/link-shortener.git
+cd link-shortener
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# 2. Install dependencies
+pnpm install
+
+# 3. Start PostgreSQL
+docker compose -f docker/docker-compose.yml up -d
+
+# 4. Copy environment files
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+
+# 5. Generate Prisma client
+pnpm --filter @nexuslinks/api prisma generate
+
+# 6. Run database migrations
+pnpm --filter @nexuslinks/api prisma db push
+
+# 7. Start development servers
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+This starts both the API (http://localhost:3001) and web (http://localhost:5173) simultaneously.
+
+## Scripts
+
+| Script           | Description                    |
+| ---------------- | ------------------------------ |
+| `pnpm dev`       | Start all services in dev mode |
+| `pnpm build`     | Build all packages             |
+| `pnpm lint`      | Lint all packages              |
+| `pnpm format`    | Format code with Prettier      |
+| `pnpm typecheck` | Run TypeScript checks          |
+
+## Project Structure
+
+```
+link-shortener/
+├── apps/
+│   ├── web/          # React + Vite frontend
+│   └── api/          # Fastify backend
+├── packages/
+│   ├── ui/           # Shared UI components
+│   ├── shared/       # Shared types & utilities
+│   └── config/       # Shared configs (TS, ESLint)
+├── prisma/           # Prisma schema
+├── docker/           # Docker Compose configs
+└── .github/          # CI workflows
+```
+
+## Docker Services
+
+| Service    | Port | Credentials                      |
+| ---------- | ---- | -------------------------------- |
+| PostgreSQL | 5432 | `nexus` / `nexus`                |
+| pgAdmin    | 5050 | `admin@nexuslinks.dev` / `admin` |
