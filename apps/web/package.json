@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.5.7",
     "@nexuslinks/shared": "workspace:*",
     "@nexuslinks/ui": "workspace:*",
     "class-variance-authority": "^0.7.1",
@@ -16,7 +17,10 @@
     "lucide-react": "^1.28.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwind-merge": "^3.6.0"
+    "react-hook-form": "^7.83.0",
+    "react-router-dom": "^7.18.2",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",

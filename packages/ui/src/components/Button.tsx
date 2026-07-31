@@ -1,89 +1,47 @@
-import { forwardRef, useState } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "../lib/utils"
+import { forwardRef } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '../lib/utils'
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center rounded-xl font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50 select-none overflow-hidden group",
+  'relative inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-40 select-none',
   {
     variants: {
       variant: {
         primary:
-          "bg-gradient-to-br from-primary to-primary-light text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98]",
+          'bg-primary text-white hover:bg-primary/90 active:bg-primary/80 shadow-sm hover:shadow-md hover:shadow-primary/20',
         secondary:
-          "glass-strong text-foreground hover:text-foreground hover:bg-surface-light/80 hover:scale-[1.02] active:scale-[0.98] border border-border/50",
-        ghost:
-          "text-muted hover:text-foreground hover:bg-surface/60 hover:scale-[1.02] active:scale-[0.98]",
+          'bg-surface-elevated text-foreground hover:bg-surface-elevated/80 border border-border hover:border-border-hover active:bg-surface-elevated/60',
+        ghost: 'text-muted hover:text-foreground hover:bg-surface',
         outline:
-          "border border-primary/30 text-primary-light hover:bg-primary/10 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98]",
-        danger:
-          "bg-danger text-white hover:bg-danger/90 hover:scale-[1.02] active:scale-[0.98]",
+          'border border-border text-foreground hover:bg-surface hover:border-border-hover active:bg-surface-elevated',
+        gradient:
+          'bg-gradient-to-r from-primary to-secondary text-white shadow-sm hover:shadow-md hover:shadow-primary/20',
+        danger: 'bg-danger text-white hover:bg-danger/90 active:bg-danger/80',
+        icon: 'h-9 w-9 p-0 text-muted hover:text-foreground hover:bg-surface rounded-lg',
       },
       size: {
-        sm: "h-9 px-4 text-xs gap-1.5",
-        md: "h-10 px-5 text-sm gap-2",
-        lg: "h-12 px-7 text-sm gap-2",
-        xl: "h-14 px-9 text-base gap-2.5",
-        xxl: "h-16 px-10 text-lg gap-3",
+        sm: 'h-8 px-3 text-xs gap-1.5 rounded-md',
+        md: 'h-9 px-4 text-sm gap-2 rounded-lg',
+        lg: 'h-10 px-5 text-sm gap-2 rounded-lg',
+        xl: 'h-12 px-6 text-base gap-2.5 rounded-xl',
       },
     },
     defaultVariants: {
-      variant: "primary",
-      size: "md",
+      variant: 'primary',
+      size: 'md',
     },
   },
 )
 
 interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, children, disabled, ...props }, ref) => {
-    const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([])
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      const id = Date.now()
-      setRipples((prev) => [...prev, { x, y, id }])
-      setTimeout(() => {
-        setRipples((prev) => prev.filter((r) => r.id !== id))
-      }, 600)
-      props.onClick?.(e)
-    }
-
-    return (
-      <button
-        className={cn(buttonVariants({ variant, size }), className)}
-        ref={ref}
-        disabled={disabled}
-        onClick={handleClick}
-        {...props}
-      >
-        {variant === "primary" && !disabled && (
-          <span className="pointer-events-none absolute -inset-full -skew-x-12 animate-shine opacity-0 transition-opacity group-hover:opacity-100">
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </span>
-        )}
-        {ripples.map((ripple) => (
-          <span
-            key={ripple.id}
-            className="pointer-events-none absolute animate-fade-in rounded-full bg-white/15"
-            style={{
-              left: ripple.x - 10,
-              top: ripple.y - 10,
-              width: 20,
-              height: 20,
-            }}
-          />
-        ))}
-        <span className="relative z-10 flex items-center gap-2">{children}</span>
-      </button>
-    )
-  },
+  ({ className, variant, size, ...props }, ref) => (
+    <button className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props} />
+  ),
 )
-Button.displayName = "Button"
+Button.displayName = 'Button'
 
 export { Button, buttonVariants }
 export type { ButtonProps }

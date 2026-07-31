@@ -1,50 +1,41 @@
-import { motion } from "framer-motion"
-import { Container, Button, Section, GlowBackground } from "@nexuslinks/ui"
+'use client'
+
+import { motion } from 'framer-motion'
+import { Container, Button } from '@nexuslinks/ui'
 
 export function FinalCTA() {
   return (
-    <Section className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 mesh-gradient" />
-      <GlowBackground color="primary" variant="blob" />
-      <Container className="relative z-10">
+    <section className="relative overflow-hidden py-20 sm:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.1),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(34,211,238,0.06),transparent_50%)]" />
+      <Container>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-3xl text-center"
+          className="mx-auto max-w-2xl text-center"
         >
-          <h2 className="text-display font-bold leading-display tracking-tight text-foreground">
-            Ready to simplify
-            <br />
-            <span className="text-gradient">your links?</span>
+          <h2 className="text-heading leading-heading text-foreground font-bold tracking-tight">
+            Ready to own your links?
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted/70">
-            Join thousands of developers and teams who trust Nexus Links to manage, track, and
-            optimize their links.
+          <p className="text-muted/60 mt-4 text-lg">
+            Join 25,000+ teams who trust Nexus Links for their link management. Start free, no
+            credit card required.
           </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button size="xxl" className="w-full sm:w-auto">
-              Get Started Free
-              <svg
-                className="h-5 w-5 transition-transform group-hover:translate-x-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Button size="lg" variant="primary" className="shadow-primary/25 shadow-lg">
+              Start building for free
             </Button>
-            <Button variant="ghost" size="xxl" className="w-full sm:w-auto">
-              Talk to Sales &rarr;
+            <Button size="lg" variant="ghost">
+              Talk to sales
             </Button>
           </div>
-          <p className="mt-4 text-sm text-muted/40">
-            No credit card required &middot; Free tier included &middot; Start in 30 seconds
+          <p className="text-muted/40 mt-5 text-xs">
+            Free plan includes 1,000 links/month · No credit card required · Cancel anytime
           </p>
         </motion.div>
       </Container>
-    </Section>
+    </section>
   )
 }

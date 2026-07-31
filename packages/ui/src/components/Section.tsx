@@ -1,22 +1,23 @@
-import { cn } from "../lib/utils"
+import { cn } from '../lib/utils'
 
 interface SectionProps {
   children: React.ReactNode
   className?: string
   id?: string
-  container?: boolean
+  fullWidth?: boolean
 }
 
-export function Section({ children, className, id, container = true }: SectionProps) {
+export function Section({ children, className, id, fullWidth }: SectionProps) {
   return (
-    <section id={id} className={cn("py-20 sm:py-28 lg:py-32", className)}>
-      {container ? (
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          {children}
-        </div>
-      ) : (
-        children
+    <section
+      id={id}
+      className={cn(
+        'py-16 sm:py-20 lg:py-24',
+        fullWidth ? '' : 'mx-auto max-w-7xl px-5 sm:px-8 lg:px-10',
+        className,
       )}
+    >
+      {children}
     </section>
   )
 }
