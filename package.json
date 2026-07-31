@@ -8,7 +8,15 @@
     "format": "prettier --write \"**/*.{ts,tsx,json,css,md}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,css,md}\" --ignore-path .gitignore",
     "typecheck": "turbo typecheck",
+    "db:generate": "prisma generate --schema prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "db:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio --schema prisma/schema.prisma",
     "prepare": "husky"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
     "husky": "^9.1.7",
@@ -39,6 +47,7 @@
     "@eslint/js": "^9.24.0",
     "@prisma/client": "6.19.3",
     "prisma": "^6.5.0",
+    "tsx": "^4.19.3",
     "typescript-eslint": "^8.29.0"
   }
 }

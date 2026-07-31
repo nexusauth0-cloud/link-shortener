@@ -1,25 +1,21 @@
-import { z } from 'zod'
+import { loadEnv, type Env } from './env.schema.js'
 
-const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.coerce.number().int().positive().default(3001),
-  HOST: z.string().default('0.0.0.0'),
-  DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32),
-})
-
-function parseEnv() {
-  const result = envSchema.safeParse(process.env)
-
-  if (!result.success) {
-    console.error('Invalid environment variables:')
-    for (const issue of result.error.issues) {
-      console.error(`  ${issue.path.join('.')}: ${issue.message}`)
-    }
-    process.exit(1)
-  }
-
-  return result.data
+try {
+  process.loadEnvFile()
+} catch {
+  // No .env file present; rely on the process environment.
 }
 
-export const env = parseEnv()
+export const env: Env = loadEnv()
+
+export function isProduction(): boolean {
+  return env.NODE_ENV === 'production'
+}
+
+export function isDevelopment(): boolean {
+  return env.NODE_ENV === 'development'
+}
+
+export function isTest(): boolean {
+  return env.NODE_ENV === 'test'
+}
