@@ -7,6 +7,7 @@ import { PageHeader } from '../shell/components/PageHeader'
 import { Button, Badge, Avatar } from '@nexuslinks/ui'
 import { mockTeamMembers, mockActivity } from '../mock/data'
 import { fadeInUp, stagger } from '@nexuslinks/ui'
+import { showToast } from '../hooks/useToast'
 import {
   Users,
   Mail,
@@ -124,12 +125,6 @@ export default function WorkspacePage() {
   const [showInvite, setShowInvite] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState<(typeof roleOptions)[number]>('Viewer')
-  const [toast, setToast] = useState<{ message: string } | null>(null)
-
-  const showToast = (message: string) => {
-    setToast({ message })
-    setTimeout(() => setToast(null), 2500)
-  }
 
   const handleInvite = () => {
     if (!inviteEmail.trim()) return
@@ -145,17 +140,17 @@ export default function WorkspacePage() {
     setMembers([...members, newMember])
     setInviteEmail('')
     setShowInvite(false)
-    showToast(`Invitation sent to ${inviteEmail}`)
+    showToast(`Invitation sent to ${inviteEmail}`, 'success')
   }
 
   const handleRoleChange = (memberId: string, newRole: string) => {
     setMembers(members.map((m) => (m.id === memberId ? { ...m, role: newRole } : m)))
-    showToast('Role updated')
+    showToast('Role updated', 'success')
   }
 
   const handleRemove = (memberId: string) => {
     setMembers(members.filter((m) => m.id !== memberId))
-    showToast('Member removed')
+    showToast('Member removed', 'success')
   }
 
   return (
@@ -339,20 +334,6 @@ export default function WorkspacePage() {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="bg-success/20 border-success/20 fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-xl"
-          >
-            <Check className="text-success h-4 w-4" />
-            <span className="text-success text-sm font-medium">{toast.message}</span>
           </motion.div>
         )}
       </AnimatePresence>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { PageLayout } from '../shell/components/PageLayout'
 import { PageHeader } from '../shell/components/PageHeader'
 import { Button, Badge, Spinner } from '@nexuslinks/ui'
+import { showToast } from '../hooks/useToast'
 import { mockApiKeys, mockWebhooks } from '../mock/data'
 import { fadeInUp, stagger } from '@nexuslinks/ui'
 import {
@@ -24,7 +25,6 @@ import {
   X,
   Eye,
   EyeOff,
-  AlertCircle,
 } from 'lucide-react'
 
 const sdkTabs = [
@@ -209,12 +209,6 @@ export default function DeveloperHubPage() {
   const [playgroundResponse, setPlaygroundResponse] = useState<string | null>(null)
   const [playgroundLoading, setPlaygroundLoading] = useState(false)
   const [visibleKeys, setVisibleKeys] = useState<Record<string, boolean>>({})
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
-
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    setToast({ message, type })
-    setTimeout(() => setToast(null), 2500)
-  }
 
   const handleCreateKey = () => {
     if (!newKeyName.trim()) return
@@ -233,12 +227,12 @@ export default function DeveloperHubPage() {
     setApiKeys([newKey, ...apiKeys])
     setNewKeyName('')
     setShowCreateKey(false)
-    showToast('API key created successfully')
+    showToast('API key created successfully', 'success')
   }
 
   const handleDeleteKey = (id: string) => {
     setApiKeys(apiKeys.filter((k) => k.id !== id))
-    showToast('API key deleted')
+    showToast('API key deleted', 'success')
   }
 
   const handleRotateKey = (id: string) => {
@@ -249,7 +243,7 @@ export default function DeveloperHubPage() {
           : k,
       ),
     )
-    showToast('API key rotated')
+    showToast('API key rotated', 'success')
   }
 
   const handleToggleWebhook = (id: string) => {
@@ -321,7 +315,7 @@ export default function DeveloperHubPage() {
           <button
             onClick={() => {
               navigator.clipboard?.writeText(sdkExamples[activeSdkTab]!)
-              showToast('Copied to clipboard')
+              showToast('Copied to clipboard', 'success')
             }}
             className="text-muted/40 hover:bg-surface/50 hover:text-foreground absolute right-2 top-2 rounded-lg p-1.5 transition-colors"
           >
@@ -526,28 +520,6 @@ export default function DeveloperHubPage() {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl px-4 py-3 shadow-xl ${
-              toast.type === 'success'
-                ? 'bg-success/20 text-success border-success/20 border'
-                : 'bg-danger/20 text-danger border-danger/20 border'
-            }`}
-          >
-            {toast.type === 'success' ? (
-              <Check className="h-4 w-4" />
-            ) : (
-              <AlertCircle className="h-4 w-4" />
-            )}
-            <span className="text-sm font-medium">{toast.message}</span>
           </motion.div>
         )}
       </AnimatePresence>

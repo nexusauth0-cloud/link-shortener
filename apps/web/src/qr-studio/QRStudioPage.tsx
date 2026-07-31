@@ -64,13 +64,11 @@ function QRPreview({
   fgColor,
   bgColor,
   pattern,
-  cornerStyle: _cornerStyle,
   frameStyle,
 }: {
   fgColor: string
   bgColor: string
   pattern: Pattern
-  cornerStyle: CornerStyle
   frameStyle: FrameStyle
 }) {
   const size = 220
@@ -466,7 +464,6 @@ export default function QRStudioPage() {
                   fgColor={fgColor}
                   bgColor={bgColor}
                   pattern={pattern}
-                  cornerStyle={cornerStyle}
                   frameStyle={frameStyle}
                 />
               </div>

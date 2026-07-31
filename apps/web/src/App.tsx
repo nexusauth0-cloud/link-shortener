@@ -1,68 +1,243 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LandingPage from './pages/LandingPage'
-import LoginPage from './auth/pages/LoginPage'
-import RegisterPage from './auth/pages/RegisterPage'
-import ForgotPasswordPage from './auth/pages/ForgotPasswordPage'
-import ResetPasswordPage from './auth/pages/ResetPasswordPage'
-import VerifyEmailPage from './auth/pages/VerifyEmailPage'
-import TwoFactorPage from './auth/pages/TwoFactorPage'
-import InvitePage from './auth/pages/InvitePage'
-import AuthSuccessPage from './auth/pages/AuthSuccessPage'
-import AuthErrorPage from './auth/pages/AuthErrorPage'
-import { AppShell } from './shell/AppShell'
-import DashboardPage from './shell/pages/DashboardPage'
-import { NotFoundPage } from './shell/pages/NotFoundPage'
-import LinkStudioPage from './link-studio/LinkStudioPage'
-import AnalyticsPage from './analytics/AnalyticsPage'
-import QRStudioPage from './qr-studio/QRStudioPage'
-import DeveloperHubPage from './developer-hub/DeveloperHubPage'
-import WorkspacePage from './workspace/WorkspacePage'
-import SettingsPage from './settings/SettingsPage'
-import BillingPage from './billing/BillingPage'
+import { ErrorBoundary } from './shell/components/ErrorBoundary'
+import { Spinner } from '@nexuslinks/ui'
+
+const LandingPage = lazy(() => import('./pages/LandingPage'))
+const LoginPage = lazy(() => import('./auth/pages/LoginPage'))
+const RegisterPage = lazy(() => import('./auth/pages/RegisterPage'))
+const ForgotPasswordPage = lazy(() => import('./auth/pages/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('./auth/pages/ResetPasswordPage'))
+const VerifyEmailPage = lazy(() => import('./auth/pages/VerifyEmailPage'))
+const TwoFactorPage = lazy(() => import('./auth/pages/TwoFactorPage'))
+const InvitePage = lazy(() => import('./auth/pages/InvitePage'))
+const AuthSuccessPage = lazy(() => import('./auth/pages/AuthSuccessPage'))
+const AuthErrorPage = lazy(() => import('./auth/pages/AuthErrorPage'))
+const AppShell = lazy(() => import('./shell/AppShell').then((m) => ({ default: m.AppShell })))
+const DashboardPage = lazy(() => import('./shell/pages/DashboardPage'))
+const LinkStudioPage = lazy(() => import('./link-studio/LinkStudioPage'))
+const AnalyticsPage = lazy(() => import('./analytics/AnalyticsPage'))
+const QRStudioPage = lazy(() => import('./qr-studio/QRStudioPage'))
+const DeveloperHubPage = lazy(() => import('./developer-hub/DeveloperHubPage'))
+const WorkspacePage = lazy(() => import('./workspace/WorkspacePage'))
+const SettingsPage = lazy(() => import('./settings/SettingsPage'))
+const BillingPage = lazy(() => import('./billing/BillingPage'))
+const NotFoundPage = lazy(() =>
+  import('./shell/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+)
+
+function RouteFallback() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size="lg" />
+        <p className="text-muted/50 text-sm">Loading...</p>
+      </div>
+    </div>
+  )
+}
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/2fa" element={<TwoFactorPage />} />
-        <Route path="/invite/:token" element={<InvitePage />} />
-        <Route path="/auth/success" element={<AuthSuccessPage />} />
-        <Route path="/auth/error" element={<AuthErrorPage />} />
-        <Route path="/app" element={<AppShell />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="links" element={<LinkStudioPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
-          <Route path="qr-studio" element={<QRStudioPage />} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Routes>
           <Route
-            path="bio-links"
-            element={<PlaceholderPage title="Bio Links" desc="Manage your bio link pages" />}
+            path="/"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <LandingPage />
+              </Suspense>
+            }
           />
           <Route
-            path="domains"
-            element={<PlaceholderPage title="Domains" desc="Manage your custom domains" />}
-          />
-          <Route path="api" element={<DeveloperHubPage />} />
-          <Route path="teams" element={<WorkspacePage />} />
-          <Route path="billing" element={<BillingPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route
-            path="help"
-            element={<PlaceholderPage title="Help Center" desc="Documentation and guides" />}
+            path="/login"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <LoginPage />
+              </Suspense>
+            }
           />
           <Route
-            path="support"
-            element={<PlaceholderPage title="Support" desc="Contact our support team" />}
+            path="/register"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <RegisterPage />
+              </Suspense>
+            }
           />
-        </Route>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/forgot-password"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <ForgotPasswordPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <ResetPasswordPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/verify-email"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <VerifyEmailPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/2fa"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <TwoFactorPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/invite/:token"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <InvitePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/success"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <AuthSuccessPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/error"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <AuthErrorPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/app"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <AppShell />
+              </Suspense>
+            }
+          >
+            <Route
+              index
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <DashboardPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="links"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <LinkStudioPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="analytics"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <AnalyticsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="qr-studio"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <QRStudioPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="bio-links"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <PlaceholderPage title="Bio Links" desc="Manage your bio link pages" />
+                </Suspense>
+              }
+            />
+            <Route
+              path="domains"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <PlaceholderPage title="Domains" desc="Manage your custom domains" />
+                </Suspense>
+              }
+            />
+            <Route
+              path="api"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <DeveloperHubPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="teams"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <WorkspacePage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="billing"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <BillingPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <SettingsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="help"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <PlaceholderPage title="Help Center" desc="Documentation and guides" />
+                </Suspense>
+              }
+            />
+            <Route
+              path="support"
+              element={
+                <Suspense fallback={<RouteFallback />}>
+                  <PlaceholderPage title="Support" desc="Contact our support team" />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { PageLayout } from '../shell/components/PageLayout'
 import { PageHeader } from '../shell/components/PageHeader'
 import { Button, Badge, Spinner } from '@nexuslinks/ui'
+import { showToast } from '../hooks/useToast'
 import { mockSessions, mockConnectedAccounts, mockUser } from '../mock/data'
 import {
   User,
@@ -73,19 +74,13 @@ export default function SettingsPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [passwordChanged, setPasswordChanged] = useState(false)
   const [sessions, setSessions] = useState(mockSessions)
-  const [toast, setToast] = useState<{ message: string } | null>(null)
-
-  const showToast = (message: string) => {
-    setToast({ message })
-    setTimeout(() => setToast(null), 2500)
-  }
 
   const handleSaveProfile = () => {
     setSaving(true)
     setTimeout(() => {
       setSaving(false)
       setSaved(true)
-      showToast('Profile saved')
+      showToast('Profile saved', 'success')
       setTimeout(() => setSaved(false), 2000)
     }, 800)
   }
@@ -96,13 +91,13 @@ export default function SettingsPage() {
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
-    showToast('Password updated')
+    showToast('Password updated', 'success')
     setTimeout(() => setPasswordChanged(false), 2000)
   }
 
   const handleEndSession = (sessionId: string) => {
     setSessions(sessions.filter((s) => s.id !== sessionId))
-    showToast('Session ended')
+    showToast('Session ended', 'success')
   }
 
   const toggleNotification = (id: string) => {
@@ -253,7 +248,7 @@ export default function SettingsPage() {
                               size="sm"
                               onClick={() => {
                                 setShowDeleteConfirm(false)
-                                showToast('Account deletion requested')
+                                showToast('Account deletion requested', 'success')
                               }}
                             >
                               Yes, delete my account
@@ -500,20 +495,6 @@ export default function SettingsPage() {
           </AnimatePresence>
         </div>
       </div>
-
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="bg-success/20 border-success/20 fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow-xl"
-          >
-            <Check className="text-success h-4 w-4" />
-            <span className="text-success text-sm font-medium">{toast.message}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </PageLayout>
   )
 }
